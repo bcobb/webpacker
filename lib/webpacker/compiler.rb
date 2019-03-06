@@ -37,6 +37,7 @@ class Webpacker::Compiler
   end
 
   private
+
     attr_reader :webpacker
 
     def last_compilation_digest
@@ -58,7 +59,7 @@ class Webpacker::Compiler
     def run_webpack
       logger.info "Compiling…"
 
-      stdout, sterr , status = Open3.capture3(
+      stdout, sterr, status = Open3.capture3(
         webpack_env,
         "#{RbConfig.ruby} ./bin/webpack",
         chdir: File.expand_path(config.root_path)
@@ -68,7 +69,7 @@ class Webpacker::Compiler
         logger.info "Compiled all packs in #{config.public_output_path}"
         logger.info stdout if config.webpack_compile_output?
       else
-        logger.error "Compilation failed:\n#{sterr}\n#{stdout}"
+        logger.error "Compilation failed with status #{status.exitstatus}:\n#{sterr}\n#{stdout}"
       end
 
       status.success?
